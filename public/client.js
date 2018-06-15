@@ -40,7 +40,11 @@ let start = () => {
 	let queuedBlocks = buildQueue(document.querySelectorAll('[data-fetch]'));
 	fetchContent(queuedBlocks, (element, text) => {
 		console.log(element, text);
-		document.querySelectorAll(`[data-fetch='${element}']`)[0].innerHTML = text;	
+		let elements = document.querySelectorAll(`[data-fetch='${element}']`);
+		// you may have the same blocks within the page you are fetching once but need to propagate all
+		elements.forEach((elem) => {
+			elem.innerHTML = text
+		});
 	});
 };
 
