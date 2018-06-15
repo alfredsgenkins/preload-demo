@@ -10,19 +10,39 @@ let buildQueue = (elements) => {
 	}
 
 	return queue;
-}
+};
+
+let fetchContent = (queuedBlocks, callback) => {
+	let queueLength = queuedBlocks.length;
+	let content = {};
+	// @TODO add fetch logic
+	for (let i = 0; i < queueLength; i++) {
+		let current = queuedBlocks[i];
+		fetch(`http://localhost:8999/block?blockname=${current}`).then(
+			(res) => {
+				if (res.status !== 200) {
+					console.error('Error fetching');
+				}
+				res.text().then((text)=> {
+					callback(current, text);
+				})
+			}
+		).catch((err) => {
+			console.log(err);
+		});
+	}
+
+	return content;
+};
 
 
 let start = () => {
-	let elements = document.querySelectorAll('[data-fetch]');
-	let queuedBlocks = buildQueue(elements);
-	// @TODO add fetch logic
-	// for (i)
-	// fetch(`localhost:8999/block?blockname=${blockname}`)
-
-
-}
-
+	let queuedBlocks = buildQueue(document.querySelectorAll('[data-fetch]'));
+	fetchContent(queuedBlocks, (element, text) => {
+		console.log(element, text);
+		document.querySelectorAll(`[data-fetch='${element}']`)[0].innerHTML = text;	
+	});
+};
 
 
 
