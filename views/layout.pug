@@ -6,13 +6,13 @@ html
 	body
 	h1= message
 	
-	div(class='block')
+	div(class='block' data-fetch='firstblock')
 		block first
-	div(class='block')
+	div(class='block' data-fetch='secondblock')
 		block second
-	div(class='block of-3')
+	div(class='block of-3' data-fetch='thirdblock')
 		block third
-	div(class='block of-3')
+	div(class='block of-3' data-fetch='thirdblock')
 		block third
-	div(class='block of-3')
+	div(class='block of-3' data-fetch='thirdblock')
 		block third
