@@ -7,7 +7,9 @@ app.get('/', (req, res) => {
 });
 
 app.get('/block', (req, res) => {
-	return blocks.single(req, res);
+	setTimeout(() => {
+		blocks.single(req, res);
+	}, Math.floor(Math.random() * 1000) + 1000) ;
 });
 
 app.set('view engine', 'pug');
