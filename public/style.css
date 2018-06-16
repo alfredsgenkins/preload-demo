@@ -14,27 +14,33 @@
 	box-sizing: border-box;
 }
 
+.block--loading::after,
+.block--loading::before {
+	background: linear-gradient(269deg, #d9d9d9, #bfbfbf);
+    background-size: 300% 300%;
+    transition: background 1s, color 1s;
+    will-change: background, color;
+	animation: font-family-loading 2s ease infinite;
+	color: transparent;
+	line-height: 1.8em;
+}
+
+@keyframes font-family-loading { 
+	0%{ background-position:0% 50%; }
+	50%{ background-position:100% 50%; }
+	100%{ background-position:0% 50%; }
+}
+
 .block--with-image.block--loading::before {
 	display: block;
 	content: '';
 	width: 100%;
 	padding-bottom: 40%;
 	margin-bottom: 1em;
-	background: linear-gradient(269deg, #d9d9d9, #bfbfbf);
-    background-size: 300% 300%;
-    transition: background 1s, color 1s;
-    will-change: background, color;
-	animation: font-family-loading 2s ease infinite;
 }
 
 .block--with-title.block--loading::before {
 	content: 'Hymenaeos primis pulvinar pulvinar sit purus.';
-	color: transparent;
-    background: linear-gradient(269deg, #d9d9d9, #bfbfbf);
-    background-size: 300% 300%;
-    transition: background 1s, color 1s;
-    will-change: background, color;
-	animation: font-family-loading 2s ease infinite;
 	display: block;
     width: max-content;
     height: 1em;
@@ -43,19 +49,6 @@
 
 .block--loading::after {
 	content: 'Pharetra aenean mollis justo quis ipsum libero fusce ornare porta penatibus urna netus primis tempor. Hymenaeos primis pulvinar pulvinar sit purus hendrerit molestie sit facilisi dapibus penatibus quam elementum. Pretium.';
-	color: transparent;
-    line-height: 1.8em;
-    background: linear-gradient(269deg, #d9d9d9, #bfbfbf);
-    background-size: 300% 300%;
-    transition: background 1s, color 1s;
-    will-change: background, color;
-    animation: font-family-loading 2s ease infinite;
-}
-
-@keyframes font-family-loading { 
-	0%{ background-position:0% 50%; }
-	50%{ background-position:100% 50%; }
-	100%{ background-position:0% 50%; }
 }
 
 .header {

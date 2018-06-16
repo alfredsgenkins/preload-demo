@@ -44,9 +44,9 @@ let start = () => {
 		let elements = document.querySelectorAll(`[data-fetch='${element}']`);
 		// you may have the same blocks within the page you are fetching once but need to propagate all
 		elements.forEach((elem) => {
-			elem.classList.add('block--loaded');
-			elem.classList.remove('block--loading');
 			elem.innerHTML = text;
+			elem.classList.remove('block--loading');
+			elem.classList.add('block--loaded');
 		});
 	});
 };
