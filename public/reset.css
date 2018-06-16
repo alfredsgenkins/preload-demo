@@ -1,0 +1,50 @@
+* {
+    position: relative;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    vertical-align: baseline;
+    font-family: inherit;
+    outline: 0;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+label {
+    display: block;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+abbr {
+    text-decoration: none;
+}
+
+img {
+    width: 100%;
+}
+
+body,
+html {
+    overflow-x: hidden;
+    width: 100vw;
+    font-family: var(--main-font);
+    font-size: 16px;
+}

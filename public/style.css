@@ -1,9 +1,89 @@
+:root {
+	--accent-bg-color: #61d0a1;
+    --accent-txt-color: #1c5a3f;
+	--main-font: 'Tajawal', sans-serif;
+}  
+
 .block {
-	border: 1px solid red;
+	padding: 10px;
 }
 
-.of-3 {
+.block--of-3 {
 	width: calc(100% / 3);
 	display: inline-block;
 	box-sizing: border-box;
+}
+
+.block--with-image.block--loading::before {
+	display: block;
+	content: '';
+	width: 100%;
+	padding-bottom: 40%;
+	margin-bottom: 1em;
+	background: linear-gradient(269deg, #d9d9d9, #bfbfbf);
+    background-size: 300% 300%;
+    transition: background 1s, color 1s;
+    will-change: background, color;
+	animation: font-family-loading 2s ease infinite;
+}
+
+.block--with-title.block--loading::before {
+	content: 'Hymenaeos primis pulvinar pulvinar sit purus.';
+	color: transparent;
+    background: linear-gradient(269deg, #d9d9d9, #bfbfbf);
+    background-size: 300% 300%;
+    transition: background 1s, color 1s;
+    will-change: background, color;
+	animation: font-family-loading 2s ease infinite;
+	display: block;
+    width: max-content;
+    height: 1em;
+    margin: .4em 0 .8em;
+}
+
+.block--loading::after {
+	content: 'Pharetra aenean mollis justo quis ipsum libero fusce ornare porta penatibus urna netus primis tempor. Hymenaeos primis pulvinar pulvinar sit purus hendrerit molestie sit facilisi dapibus penatibus quam elementum. Pretium.';
+	color: transparent;
+    line-height: 1.8em;
+    background: linear-gradient(269deg, #d9d9d9, #bfbfbf);
+    background-size: 300% 300%;
+    transition: background 1s, color 1s;
+    will-change: background, color;
+    animation: font-family-loading 2s ease infinite;
+}
+
+@keyframes font-family-loading { 
+	0%{ background-position:0% 50%; }
+	50%{ background-position:100% 50%; }
+	100%{ background-position:0% 50%; }
+}
+
+.header {
+	position: fixed;
+	height: 60px;
+	z-index: 1;
+	background-color: var(--accent-bg-color);
+	width: 100%;
+	text-align: center;
+	overflow: hidden;
+}
+
+.header__title {
+	line-height: 60px;
+	color: var(--accent-txt-color);
+	top: 5px;
+}
+
+main {
+	margin: 80px auto 0;
+	max-width: 1000px;
+
+}
+
+p {
+	margin-top: .75em;
+}
+
+img {
+	padding: .5em 0;
 }

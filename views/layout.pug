@@ -1,18 +1,25 @@
 html
 	head
 		title= title
+		link(rel='stylesheet' type='text/css' href='reset.css')
 		link(rel='stylesheet' type='text/css' href='style.css')
+		link(href='https://fonts.googleapis.com/css?family=Tajawal' rel='stylesheet')
 		script(src="client.js")
 	body
-	h1= message
 	
-	div(class='block' data-fetch='firstblock')
-		block first
-	div(class='block' data-fetch='secondblock')
-		block second
-	div(class='block of-3' data-fetch='thirdblock')
-		block third
-	div(class='block of-3' data-fetch='thirdblock')
-		block third
-	div(class='block of-3' data-fetch='thirdblock')
-		block third
+	header(class='header')
+		h1(class='header__title')= message
+	
+	main
+		section(class='block block--with-title block--loading' data-fetch='firstblock')
+			block first
+		section(class='block block--loading' data-fetch='secondblock')
+			block second
+		section(class='block block--of-3 block--with-image block--loading' data-fetch='thirdblock')
+			block third
+		section(class='block block--of-3 block--with-image block--loading' data-fetch='thirdblock')
+			block third
+		section(class='block block--of-3 block--with-image block--loading' data-fetch='thirdblock')
+			block third
+		section(class='block block--loading' data-fetch='secondblock')
+			block second

@@ -18,14 +18,15 @@ let fetchContent = (queuedBlocks, callback) => {
 	// @TODO add fetch logic
 	for (let i = 0; i < queueLength; i++) {
 		let current = queuedBlocks[i];
-		fetch(`http://localhost:8999/block?blockname=${current}`).then(
+		fetch(`/block?blockname=${current}`).then(
 			(res) => {
 				if (res.status !== 200) {
 					console.error('Error fetching');
 				}
+
 				res.text().then((text)=> {
 					callback(current, text);
-				})
+				});
 			}
 		).catch((err) => {
 			console.log(err);
@@ -43,7 +44,9 @@ let start = () => {
 		let elements = document.querySelectorAll(`[data-fetch='${element}']`);
 		// you may have the same blocks within the page you are fetching once but need to propagate all
 		elements.forEach((elem) => {
-			elem.innerHTML = text
+			elem.classList.add('block--loaded');
+			elem.classList.remove('block--loading');
+			elem.innerHTML = text;
 		});
 	});
 };
@@ -53,4 +56,3 @@ let start = () => {
 document.addEventListener('DOMContentLoaded', function(){
 	start();
 });
-
