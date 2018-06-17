@@ -1,11 +1,30 @@
 :root {
-	--accent-bg-color: #313131;
-    --accent-txt-color: #a57f22;
+	--accent-bg-color: #a8d186;
+    --accent-txt-color: #313131;
 	--main-font: 'Tajawal', sans-serif;
 }  
 
 .block {
 	padding: 10px;
+}
+
+.block > * {
+	transform-origin: center top;
+	transition: opacity .3s;
+	opacity: 0;
+}
+
+.block--loaded > * {
+	animation: block-content-loading .3s .1s forwards;
+}
+
+@keyframes block-content-loading { 
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }
 
 .block--of-3 {
