@@ -36,7 +36,7 @@
 .block--loading::after,
 .block--loading::before {
 	background: linear-gradient(269deg, #d9d9d9, #bfbfbf);
-    background-size: 300% 300%;
+    background-size: 500% 500%;
     transition: background 1s, color 1s;
     will-change: background, color;
 	animation: font-family-loading 2s ease infinite;
