@@ -1,7 +1,7 @@
 var defaultController = (res) => {
 	res.render('templates/all', {
 		title: 'Proof of concept',
-		message: 'Prove of concept'
+		message: 'Prove of concept',
 	});
 }
 
@@ -9,8 +9,8 @@ var singleBlockController = (req, res) => {
 	if (!req.query.blockname) {
 		throw new Error('Blockname was not defined');
 	}
+
 	let block = req.query.blockname;
-	console.log(block);
 	res.render(`templates/${block}`, (err, html) => {
 		if (err) {
 			res.status(404);
