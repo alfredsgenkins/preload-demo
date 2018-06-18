@@ -4,7 +4,6 @@ html
 		link(rel='stylesheet' type='text/css' href='reset.css')
 		link(rel='stylesheet' type='text/css' href='style.css')
 		link(href='https://fonts.googleapis.com/css?family=Tajawal' rel='stylesheet')
-		script(src="client.js")
 	body
 	
 	header(class='header')
@@ -12,12 +11,13 @@ html
 	
 	main
 		section(class='block block--with-title block--loading' data-fetch='firstblock')
-			block first
+			
 		section(class='block block--of-3 block--with-image block--loading' data-fetch='thirdblock')
-			block third
+			
+		section(class='block block--of-3 block--with-image block--loading' data-fetch='fourthblock')
+			
 		section(class='block block--of-3 block--with-image block--loading' data-fetch='thirdblock')
-			block third
-		section(class='block block--of-3 block--with-image block--loading' data-fetch='thirdblock')
-			block third
+			
 		section(class='block block--loading' data-fetch='secondblock')
-			block second
+
+		script(src="client.js")

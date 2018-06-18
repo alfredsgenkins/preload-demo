@@ -37,16 +37,30 @@ let fetchContent = (queuedBlocks, callback) => {
 };
 
 
+let lookupForImages = (text) => {
+	let imageSources = [];
+	let res = text.match(/<img\ssrc=["|']([^"|^']\S+)["|']/ig);
+
+	res && res.forEach(el => {
+		let imageSource = el.match(/<img\ssrc=["|']([^"|^']\S+)["|']/i)[1];
+		imageSources.push(imageSource);
+	});
+
+	return imageSources;
+}
+
+
 let start = () => {
 	let queuedBlocks = buildQueue(document.querySelectorAll('[data-fetch]'));
 	fetchContent(queuedBlocks, (element, text) => {
-		console.log(element, text);
+		let imageSources = lookupForImages(text);
+		console.log(imageSources);
 		let elements = document.querySelectorAll(`[data-fetch='${element}']`);
 		// you may have the same blocks within the page you are fetching once but need to propagate all
 		elements.forEach((elem) => {
 			elem.innerHTML = text;
 			elem.classList.remove('block--loading');
-			elem.classList.add('block--loaded');
+			elem.classList.add('block--loaded');			
 		});
 	});
 };

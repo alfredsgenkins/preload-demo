@@ -1,5 +1,5 @@
 var defaultController = (res) => {
-	res.render('templates/all', {
+	res.render('layout', {
 		title: 'Proof of concept',
 		message: 'Prove of concept',
 	});
