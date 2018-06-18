@@ -15,7 +15,7 @@ let buildQueue = (elements) => {
 let fetchContent = (queuedBlocks, callback) => {
 	let queueLength = queuedBlocks.length;
 	let content = {};
-	// @TODO add fetch logic
+
 	for (let i = 0; i < queueLength; i++) {
 		let current = queuedBlocks[i];
 		fetch(`/block?blockname=${current}`).then(
@@ -37,35 +37,44 @@ let fetchContent = (queuedBlocks, callback) => {
 };
 
 
-let lookupForImages = (text) => {
-	let imageSources = [];
-	let res = text.match(/<img\ssrc=["|']([^"|^']\S+)["|']/ig);
+let lookupForImages = (text, callback) => {
+	let res = text.match(/<img\ssrc=["|']([^"|^']\S+)["|']/ig),
+		imagesLoaded = 0;
 
-	res && res.forEach(el => {
-		let imageSource = el.match(/<img\ssrc=["|']([^"|^']\S+)["|']/i)[1];
-		imageSources.push(imageSource);
-	});
-
-	return imageSources;
-}
+	if (res) {
+		res.forEach(el => {
+			let imageSource = el.match(/<img\ssrc=["|']([^"|^']\S+)["|']/i)[1],
+				fakeImage = new Image();
+	
+			fakeImage.src = imageSource;
+			fakeImage.onload = function () {
+				++imagesLoaded;
+				
+				if (imagesLoaded === res.length) {
+					callback();
+				}
+			};
+		});
+	} else {
+		callback();
+	}
+};
 
 
 let start = () => {
 	let queuedBlocks = buildQueue(document.querySelectorAll('[data-fetch]'));
 	fetchContent(queuedBlocks, (element, text) => {
-		let imageSources = lookupForImages(text);
-		console.log(imageSources);
-		let elements = document.querySelectorAll(`[data-fetch='${element}']`);
-		// you may have the same blocks within the page you are fetching once but need to propagate all
-		elements.forEach((elem) => {
-			elem.innerHTML = text;
-			elem.classList.remove('block--loading');
-			elem.classList.add('block--loaded');			
-		});
+		lookupForImages(text, () => {
+			let elements = document.querySelectorAll(`[data-fetch='${element}']`);
+			
+			elements.forEach((elem) => {
+				elem.innerHTML = text;
+				elem.classList.remove('block--loading');
+				elem.classList.add('block--loaded');			
+			});
+		});		
 	});
 };
-
-
 
 document.addEventListener('DOMContentLoaded', function(){
 	start();
