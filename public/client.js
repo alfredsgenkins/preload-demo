@@ -69,9 +69,9 @@ let start = () => {
 			let elements = document.querySelectorAll(`[data-fetch='${element}']`);
 			
 			elements.forEach(elem => {
-				// elem.innerHTML = text;
-				// elem.classList.remove('block--loading');
-				// elem.classList.add('block--loaded');			
+				elem.innerHTML = text;
+				elem.classList.remove('block--loading');
+				elem.classList.add('block--loaded');			
 			});
 		});		
 	});
