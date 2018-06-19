@@ -35,6 +35,7 @@
 	width: calc(100% / 3);
 	display: inline-block;
 	box-sizing: border-box;
+	vertical-align: top;
 }
 
 .block--loading::after,

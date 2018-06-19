@@ -1,82 +1,73 @@
-let buildQueue = (elements) => {
-	let elementCount = elements.length;
-	let queue = [];
+class Preload {
+	constructor() {
+		// TODO: Initialize params params here
 
-	for (let i = 0; i < elementCount; i++) {
-		let blockName = elements[i].getAttribute('data-fetch');
-		if (queue.indexOf(blockName) === -1) {
-			queue.push(blockName);
-		}
-	}
+		this.fetchBlocks().then(blocks => {	
+			// TODO: Dispatch custom event here
 
-	return queue;
-};
-
-let fetchContent = (queuedBlocks, callback) => {
-	let queueLength = queuedBlocks.length;
-	let content = {};
-
-	for (let i = 0; i < queueLength; i++) {
-		let current = queuedBlocks[i];
-		fetch(`/block?blockname=${current}`).then(
-			(res) => {
-				if (res.status !== 200) {
-					console.error('Error fetching');
-				}
-
-				res.text().then((text)=> {
-					callback(current, text);
+			for (let blockName in blocks) {
+				blocks[blockName].elements.forEach(element => {
+					blocks[blockName].render.then(text => {
+						element.innerHTML = text;
+						element.classList.remove('block--loading');
+						element.classList.add('block--loaded');	
+					});
 				});
 			}
-		).catch((err) => {
+		}).catch(err => {
 			console.log(err);
 		});
 	}
 
-	return content;
-};
+	fetchBlocks() {
+		let blocks = {};
 
-
-let lookupForImages = (text, callback) => {
-	let res = text.match(/<img\ssrc=["|']([^"|^']\S+)["|']/ig),
-		imagesLoaded = 0;
-
-	if (res) {
-		res.forEach(el => {
-			let imageSource = el.match(/<img\ssrc=["|']([^"|^']\S+)["|']/i)[1],
-				fakeImage = new Image();
+		return new Promise((resolve, reject) => {
+			document.querySelectorAll('[data-fetch]').forEach(element => {
+				let blockName = element.getAttribute('data-fetch');
 	
-			fakeImage.src = imageSource;
-			fakeImage.onload = () => {
-				++imagesLoaded;
-				
-				if (imagesLoaded === res.length) {
-					callback();
+				if (blockName in blocks) {
+					blocks[blockName].elements.push(element);
+				} else {
+					blocks[blockName] = {
+						elements: [element],
+						render: fetch(`/block?blockname=${blockName}`)
+							.then(res => res.status !== 200 && console.error('Error fetching') || res.text().then(text => this.fetchContent(text)))
+							.catch(err => reject(err))
+					};
 				}
-			};
-		});
-	} else {
-		callback();
-	}
-};
-
-
-let start = () => {
-	let queuedBlocks = buildQueue(document.querySelectorAll('[data-fetch]'));
-
-	fetchContent(queuedBlocks, (element, text) => {
-		lookupForImages(text, () => {
-			let elements = document.querySelectorAll(`[data-fetch='${element}']`);
-			
-			elements.forEach(elem => {
-				elem.innerHTML = text;
-				elem.classList.remove('block--loading');
-				elem.classList.add('block--loaded');			
 			});
-		});		
-	});
-};
 
-document.addEventListener('DOMContentLoaded', function(){
-	start();
+			resolve(blocks);
+		});
+	}
+
+	fetchContent(text) {
+		// TODO: rewrite image source logic – I don't like 2 loops
+
+		let res = text.match(/<img\ssrc=["|']([^"|^']\S+)["|']/ig),
+			imagesLoaded = 0;
+
+		if (res) {
+			res.forEach(el => {
+				let imageSource = el.match(/<img\ssrc=["|']([^"|^']\S+)["|']/i)[1],
+					fakeImage = new Image();
+		
+				fakeImage.src = imageSource;
+				fakeImage.onload = () => {
+					++imagesLoaded;
+					
+					if (imagesLoaded === res.length) {
+						return text;
+					}
+				};
+			});
+		}
+
+		return text;
+	}
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+	new Preload();
 });
