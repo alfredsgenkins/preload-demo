@@ -47,7 +47,7 @@ let lookupForImages = (text, callback) => {
 				fakeImage = new Image();
 	
 			fakeImage.src = imageSource;
-			fakeImage.onload = function () {
+			fakeImage.onload = () => {
 				++imagesLoaded;
 				
 				if (imagesLoaded === res.length) {
@@ -63,14 +63,15 @@ let lookupForImages = (text, callback) => {
 
 let start = () => {
 	let queuedBlocks = buildQueue(document.querySelectorAll('[data-fetch]'));
+
 	fetchContent(queuedBlocks, (element, text) => {
 		lookupForImages(text, () => {
 			let elements = document.querySelectorAll(`[data-fetch='${element}']`);
 			
-			elements.forEach((elem) => {
-				elem.innerHTML = text;
-				elem.classList.remove('block--loading');
-				elem.classList.add('block--loaded');			
+			elements.forEach(elem => {
+				// elem.innerHTML = text;
+				// elem.classList.remove('block--loading');
+				// elem.classList.add('block--loaded');			
 			});
 		});		
 	});
