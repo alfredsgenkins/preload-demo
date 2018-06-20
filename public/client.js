@@ -1,21 +1,6 @@
 class Preload {
 	constructor() {
-		this.fetchBlocks({}).then(blocks => {	
-			for (let blockName in blocks) {
-				blocks[blockName].elements.forEach(element => {
-					blocks[blockName].render.then(text => {
-						element.dispatchEvent(new CustomEvent('blockContentLoaded', { 
-							bubbles: true,
-							detail: {
-								content: text
-							}
-						}));
-					});
-				});
-			}
-		}).catch(err => {
-			console.log(err);
-		});
+		this.fetchBlocks({}).then(blocks => this.dispatchLoadEvent(blocks)).catch(err => console.log(err));
 	}
 
 	fetchBlocks(blocks) {
@@ -48,6 +33,16 @@ class Preload {
 			}))).then(() => text);
 		} catch (error) {
 			return text;
+		}
+	}
+
+	dispatchLoadEvent(blocks) {
+		for (let blockName in blocks) {
+			blocks[blockName].elements.forEach(element => {
+				blocks[blockName].render.then(text => {
+					element.dispatchEvent(new CustomEvent('blockContentLoaded', { bubbles: true, detail: { content: text } }));
+				}).catch(err => console.log(err));
+			});
 		}
 	}
 }
