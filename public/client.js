@@ -40,19 +40,15 @@ class Preload {
 	}
 
 	fetchContent(text) {
-		let res = text.match(/<img\ssrc=["|']([^"|^']\S+)["|']/ig);
-		
-		if (!res) { 
-			return text;
-		}
-
-		return Promise.all(res.map((el) => {
-			return new Promise ((resolve, reject) => {
+		try {
+			return Promise.all(text.match(/<img\ssrc=["|']([^"|^']\S+)["|']/ig).map((el) => new Promise ((resolve, reject) => {
 				let imageSource = el.match(/src=["|']([^"|^']\S+)["|']/i)[1], fakeImage = new Image();
 				fakeImage.src = imageSource;
 				fakeImage.onload = () => resolve();
-			});
-		})).then(() => text);
+			}))).then(() => text);
+		} catch (error) {
+			return text;
+		}
 	}
 }
 
