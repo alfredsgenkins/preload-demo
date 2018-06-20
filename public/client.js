@@ -1,16 +1,15 @@
 class Preload {
 	constructor() {
-		// TODO: Initialize params params here
-
-		this.fetchBlocks().then(blocks => {	
-			// TODO: Dispatch custom event here
-
+		this.fetchBlocks({}).then(blocks => {	
 			for (let blockName in blocks) {
 				blocks[blockName].elements.forEach(element => {
 					blocks[blockName].render.then(text => {
-						element.innerHTML = text;
-						element.classList.remove('block--loading');
-						element.classList.add('block--loaded');	
+						element.dispatchEvent(new CustomEvent('blockContentLoaded', { 
+							bubbles: true,
+							detail: {
+								content: text
+							}
+						}));
 					});
 				});
 			}
@@ -19,9 +18,7 @@ class Preload {
 		});
 	}
 
-	fetchBlocks() {
-		let blocks = {};
-
+	fetchBlocks(blocks) {
 		return new Promise((resolve, reject) => {
 			document.querySelectorAll('[data-fetch]').forEach(element => {
 				let blockName = element.getAttribute('data-fetch');
@@ -43,31 +40,30 @@ class Preload {
 	}
 
 	fetchContent(text) {
-		// TODO: rewrite image source logic – I don't like 2 loops
-
-		let res = text.match(/<img\ssrc=["|']([^"|^']\S+)["|']/ig),
-			imagesLoaded = 0;
-
-		if (res) {
-			res.forEach(el => {
-				let imageSource = el.match(/<img\ssrc=["|']([^"|^']\S+)["|']/i)[1],
-					fakeImage = new Image();
+		let res = text.match(/<img\ssrc=["|']([^"|^']\S+)["|']/ig);
 		
-				fakeImage.src = imageSource;
-				fakeImage.onload = () => {
-					++imagesLoaded;
-					
-					if (imagesLoaded === res.length) {
-						return text;
-					}
-				};
-			});
+		if (!res) { 
+			return text;
 		}
 
-		return text;
+		return Promise.all(res.map((el) => {
+			return new Promise ((resolve, reject) => {
+				let imageSource = el.match(/src=["|']([^"|^']\S+)["|']/i)[1], fakeImage = new Image();
+				fakeImage.src = imageSource;
+				fakeImage.onload = () => resolve();
+			});
+		})).then(() => text);
 	}
 }
 
 document.addEventListener('DOMContentLoaded', () => {
 	new Preload();
+});
+
+document.addEventListener('blockContentLoaded', (event) => {
+	let element = event.target;
+
+	element.innerHTML = event.detail.content;
+	element.classList.remove('block--loading');
+	element.classList.add('block--loaded');	
 });
