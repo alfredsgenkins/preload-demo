@@ -37,6 +37,8 @@ class Preload {
 	}
 
 	dispatchLoadEvent(blocks) {
+		// TODO: probably possible remove this two loops
+
 		for (let blockName in blocks) {
 			blocks[blockName].elements.forEach(element => {
 				blocks[blockName].render.then(text => {
