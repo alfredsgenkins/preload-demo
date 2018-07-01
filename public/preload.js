@@ -67,7 +67,6 @@ class Preload {
 						fakeImage.onload = ev => resolve();
 						fakeImage.onerror = ev => resolve();
 						fakeImage.src = imageSource;
-						console.log(imageSource);
 					})
 				)
 			).then(() => text);
