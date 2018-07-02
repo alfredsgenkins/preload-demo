@@ -23,8 +23,7 @@ class Preload {
 	 * @param {string} dataAttribute 
 	 */
 	fetchBlocks(handlerURL, dataAttribute) {
-		let renders = {}, // to collect all renders by key (for elemnts)
-			promises = []; // to collect all promises (for Promise.all)
+		let renders = {}; // to collect all renders by key (for elemnts)
 
 		document.querySelectorAll('[' + dataAttribute + ']').forEach(element => {
 			let blockName = element.getAttribute(dataAttribute);
@@ -35,8 +34,6 @@ class Preload {
 						res.text().then(text => this.fetchContent(text)) || 
 						console.error('Preload', 'Error fetching') 
 					).catch(err => console.error('Preload', err));
-
-				promises.push(renders[blockName]);
 			}
 
 			renders[blockName].then(text => 
@@ -49,7 +46,7 @@ class Preload {
 			)).catch(err => console.error('Preload', err));
 		});
 
-		return Promise.all(promises); // return promise waiting for every element to resolve
+		return Promise.all(Object.values(renders)); // return promise waiting for every element to resolve
 	}
 
 	/**
