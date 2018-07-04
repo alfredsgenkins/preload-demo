@@ -25,7 +25,6 @@ class Preload {
     fetchBlocks(handlerURL, dataAttribute) {
         let renders = {}; // to collect all renders by key (for elements)
 
-
         document.querySelectorAll('[' + dataAttribute + ']').forEach(element => {
             let blockName = element.getAttribute(dataAttribute);
 
