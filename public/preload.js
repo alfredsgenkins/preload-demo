@@ -52,7 +52,6 @@ class Preload {
         return Promise.all(Object.values(renders)); // return promise waiting for every element to resolve
     }
 
-
     /**
 	 * Fetch content (lazy load images, before show)
 	 * @param {string} text 
